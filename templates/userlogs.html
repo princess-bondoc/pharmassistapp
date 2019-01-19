@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>PharmAssist</title>
+<meta charset="UTF-8">
+<link rel="icon" type="image/png" href="{{ url_for('static', filename='PhramAssist_Logo_mini.png') }}" sizes="196x196" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/userlogsStyle.css') }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script
+			  src="https://code.jquery.com/jquery-3.3.1.min.js"
+			  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+			  crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+<style>
+	body {
+		background-repeat: no-repeat;
+		background-blend-mode: lighten;
+		background-attachment: fixed;
+    	background-position: center; 
+    	background-size: cover;
+		font-family: "Raleway", sans-serif;
+		margin: 0px;
+		padding: 0px;
+		background-image: url({{url_for('static', filename='background.jpg')}});
+	}
+</style>
+</head>
+<body onload="loadRows();">
+	<div id="mySidenav" class="sidenav">
+	 	<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+	 	<a href="{{ url_for('login') }}">Logout</a>
+	</div>
+
+	<div id="main">
+		<div class="navbar">
+			<!----NAVIGATION----->
+			<span class="navtext" onclick="openNav()">
+				<text style="margin-left: 10%;">&#9776; Pharm</text>
+				<text style="color: #52BDF6; margin-left: -6px">Assist</text>
+			</span>
+		</div>
+
+		<div style="width: 100%">
+			<div class="content1">
+				<div class="col1">
+					<a href="{{ url_for('home') }}" class="btnsignup">Sort</a>
+					<table style="background-color: white;" id="dataTable">
+<!-- 						<tr>
+							<th>Item</th>
+							<th>Category</th>
+							<th>Student No.</th>
+							<th>Date</th>
+						</tr> -->
+					</table>
+				</div>
+			</div>
+
+			<h2 id="info_content">{{info}}</h2>
+
+			<div class="footer">
+				&copy; 2018 PharmAssist 🇵🇭
+			</div>
+		</div>
+	</div>	
+</body>
+<script>
+	function openNav() {
+	    document.getElementById("mySidenav").style.width = "250px";
+	    document.getElementById("main").style.marginLeft = "250px";
+	}
+
+	function closeNav() {
+	    document.getElementById("mySidenav").style.width = "0";
+	    document.getElementById("main").style.marginLeft= "0";
+	}
+
+	(function() {
+        var txtSearch = document.getElementById('txtSearch');
+        txtSearch.addEventListener('keypress', function(event) {
+            if (event.keyCode == 13) {
+            	alert(txtSearch.value)
+            }
+        });
+    }());
+
+    function loadRows() {
+    	var infoList = document.getElementById("info_content").textContent;
+    	// alert(infoList);
+    	var table = document.getElementById("dataTable");
+   //  	for (var i = 0; i < 3; i++) {
+   //  		var rowCount = document.getElementById("dataTable").getElementsByTagName("tr").length;
+
+			// var row = table.insertRow(rowCount);
+
+			// // Insert new cells (<td> elements) at the 1st and 2nd position of the "new" <tr> element:
+			// var cell1 = row.insertCell(0);
+			// var cell2 = row.insertCell(1);
+			// var cell3 = row.insertCell(2);
+			// var cell4 = row.insertCell(3);
+
+			// // Add some text to the new cells:
+			// cell1.innerHTML = "NEW CELL1";
+			// cell2.innerHTML = "NEW CELL2"; 
+			// cell3.innerHTML = "NEW CELL3";
+			// cell4.innerHTML = "NEW CELL4"; 
+   //  	}
+    	if (infoList != "") {
+	        infoList = infoList.substring(0, infoList.length - 3)
+	        var infoArray = infoList.split("-/-")
+	        var infoItems = 0
+	        var infoCount = infoArray.length
+
+	        var table = document.getElementById("dataTable");
+	        var header = table.createTHead();
+	        var row = header.insertRow(0);
+	        var cell1 = row.insertCell(0);
+	        cell1.innerHTML = "<th>Item</th>";
+
+
+	        for (var i = 0; i < infoCount; i++) {
+	        	var rowCount = document.getElementById("dataTable").getElementsByTagName("tr").length;
+	        	var row = table.insertRow(rowCount);
+	        	var cell1 = row.insertCell(0);
+				// var cell2 = row.insertCell(1);
+				// var cell3 = row.insertCell(2);
+				// var cell4 = row.insertCell(3);
+				cell1.innerHTML = infoArray[i];
+				// alert(infoArray[i])
+				// i+=1
+				// cell2.innerHTML = infoArray[i];
+				// // alert(infoArray[i])
+				// i+=1
+				// cell3.innerHTML = infoArray[i];
+				// // alert(infoArray[i])
+				// i+=1
+				// cell4.innerHTML = infoArray[i]; 
+				// alert(infoArray[i])
+	        }
+	    }
+    }
+</script>
+</html>

@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>PharmAssist</title>
+<meta charset="UTF-8">
+<link rel="icon" type="image/png" href="{{ url_for('static', filename='PhramAssist_Logo_mini.png') }}" sizes="196x196" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/statreportStyle.css') }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script
+			  src="https://code.jquery.com/jquery-3.3.1.min.js"
+			  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+			  crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+<style>
+	body {
+		background-repeat: no-repeat;
+		background-blend-mode: lighten;
+		background-attachment: fixed;
+    	background-position: center; 
+    	background-size: cover;
+		font-family: "Raleway", sans-serif;
+		margin: 0px;
+		padding: 0px;
+		background-image: url({{url_for('static', filename='background.jpg')}});
+	}
+</style>
+</head>
+<body onload="loadRows();">
+	<div id="mySidenav" class="sidenav">
+	 	<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+	 	<a href="{{ url_for('login') }}">Logout</a>
+	</div>
+
+	<div id="main">
+		<div class="navbar">
+			<!----NAVIGATION----->
+			<span class="navtext" onclick="openNav()">
+				<text style="margin-left: 10%;">&#9776; Pharm</text>
+				<text style="color: #52BDF6; margin-left: -6px">Assist</text>
+			</span>
+		</div>
+
+		<div style="width: 100%">
+			<div class="content1">
+				<div class="col1">
+					<h3>Frequency Report</h3>
+					<form id="ci_form">
+						<table style="margin-left: auto; margin-right: auto;">
+							<tr>
+								<td>
+									<select name="select_cat" id="select_cat" class="noback_input">
+										<option selected value value="Common Illnesses">Common Illnesses</option>
+										<option value="Medicine">Medicine</option>
+									</select>
+								</td>
+	<!-- 							<td>
+									<input class="id_input" maxlength="8" minlength="8" type="text" id="txtStudNo" name="txtStudNo" placeholder="Student No.">
+								</td> -->
+								<td>
+									<input style="width: 82px;" class="day_input" minlength="1" maxlength="2" type="number" min="1" max="31" id="txtDay" name="txtDay" placeholder="Day">
+								</td>
+								<td>
+									<select class="month_select" style="width: 100px;" name="select_month" id="select_month">
+										<option disabled selected value>Month</option>
+										<option value="Jan">January</option>
+										<option value="Feb">February</option>
+										<option value="Mar">March</option>
+										<option value="Apr">April</option>
+										<option value="May">May</option>
+										<option value="Jun">June</option>
+										<option value="Jul">July</option>
+										<option value="Aug">August</option>
+										<option value="Sep">September</option>
+										<option value="Oct">October</option>
+										<option value="Nov">November</option>
+										<option value="Dec">December</option>
+									</select>
+								</td>
+								<td>
+									<input style="width: 90px;" class="year_input" minlength="4" maxlength="4" type="number" min="1953" id="txtYear" name="txtYear" placeholder="Year">
+								</td>
+								<td><button type="submit" class="btnsort" onclick="sort();">Sort</button></td>
+								<td><button type="submit" class="btnsort" onclick="viewAll();">View All</button></td>
+							</tr>
+						</table>
+					</form>
+					<table style="background-color: white; width: 97%" id="dataTable">
+					</table>
+				</div>
+			</div>
+
+			<h2 id="info_content">{{info}}</h2>
+
+			<div class="footer">
+				&copy; 2018 PharmAssist 🇵🇭
+			</div>
+		</div>
+	</div>	
+</body>
+<script>
+	var category = '';
+
+	function sort() {
+		category = "sort";
+	}
+
+	function viewAll() {
+		category = "all";
+	}
+
+	$(document).ready(function() {
+		$('form').on('submit', function(event) {
+			$.ajax({
+				data: {
+					txtDay : $('#txtDay').val(),
+					txtMonth : ($('#select_month').find('option:selected').val()),
+					txtYear : $('#txtYear').val(),
+					// txtStudNo : $('#txtStudNo').val(),
+					txtCategory : ($('#select_cat').find('option:selected').val()),
+					category : category
+				},
+				type: 'POST',
+				url: '/process_report'
+			})
+
+			.done(function(data) {
+				var infoList = data.verify;
+
+
+		    	if (infoList != "") {
+			        infoList = infoList.substring(0, infoList.length - 3)
+			        var infoArray = infoList.split("-/-")
+			        var infoItems = 0
+			        var infoCount = infoArray.length
+
+			        var table = document.getElementById("dataTable");
+			        $("#dataTable thead").remove();
+			        $("#dataTable tr").remove();
+			        var thead = document.createElement("thead");
+			        table.appendChild(thead);
+
+			        var h1 = document.createElement("th");
+			        var t1 = document.createTextNode("No.");
+			        var h2 = document.createElement("th");
+			        var t2 = document.createTextNode("--");
+			        h1.appendChild(t1);
+			        h2.appendChild(t2);
+			        thead.appendChild(h1);
+			        thead.appendChild(h2);
+
+
+			        var count = 1;
+			        for (var i = 0; i < infoCount; i++) {
+			        	var rowCount = document.getElementById("dataTable").getElementsByTagName("tr").length;
+			        	var row = table.insertRow(rowCount);
+			        	var cell1 = row.insertCell(0);
+						var cell2 = row.insertCell(1);
+						cell1.innerHTML = count;
+						cell2.innerHTML = infoArray[i];
+						count++;
+			        }
+				// if (document.getElementById("txtDay").value == '') {
+				// 	document.getElementById("p_error_msg").innerHTML = "Please input the day of your birthdate."
+				// }
+				// else if (data.verify == 'M') {
+				// 	document.getElementById("p_error_msg").innerHTML = "Please select the month of your birthdate."
+				// }
+				// else if (document.getElementById("txtYear").value == '') {
+				// 	document.getElementById("p_error_msg").innerHTML = "Please input the year of your birthdate."
+				// }
+				// if (data.verify == 'B') {
+				// 	document.getElementById("p_error_msg").innerHTML = "Date is invalid."
+				// 	txtDay.value = ''
+				// 	txtYear.value = ''
+				// }
+				// else if (data.verify == 'G') {
+				// 	document.getElementById("p_error_msg").innerHTML = "Please select your gender."
+				// }
+				// else if (document.getElementById("txtUsername").value == '') {
+				// 	document.getElementById("p_error_msg").innerHTML = "Please input your username."
+				// }
+				// else if (document.getElementById("txtPassword").value == '') {
+				// 	document.getElementById("p_error_msg").innerHTML = "Please input your password."
+				// }
+				// else if (document.getElementById("txtConfPassword").value == '') {
+				// 	document.getElementById("p_error_msg").innerHTML = "Please input password confirmation."
+				// }
+				// else {
+				// 	document.getElementById("p_error_msg").innerHTML = ""
+				// 	if (data.verify == "SN") {
+				// 		document.getElementById("p_error_msg").innerHTML = "Student No. not valid.";
+				// 		txtStudNo.value = '';
+				// 	}
+				// 	else if (data.verify == "ID") {
+				// 		document.getElementById("p_error_msg").innerHTML = "Student No. already exists.";
+				// 		txtStudNo.value = '';
+				// 	}
+				// 	else if (data.verify == "U") {
+				// 		document.getElementById("p_error_msg").innerHTML = "Username already exists.";
+				// 		txtUsername.value = '';
+				// 	}
+				// 	else if (data.verify == "P") {
+				// 		document.getElementById("p_error_msg").innerHTML = "Passwords do not match.";
+				// 		txtPassword.value = '';
+				// 		txtConfPassword.value = '';
+				// 	}
+				// 	else if (data.verify == "C") {
+				// 		document.getElementById("p_error_msg").innerHTML = "Please read the 'Terms and Conditions' provided below."
+				// 	}
+				// 	else {
+				// 		document.getElementById("p_error_msg").innerHTML = "";
+				// 		txtFName.value = '';
+				// 		txtLName.value = '';
+				// 		txtDay.value = '';
+				// 		select_month.checked = false;
+				// 		txtYear.value = '';
+				// 		select_gender.checked = false;
+				// 		txtUsername.value = '';
+				// 		txtPassword.value = '';
+				// 		txtConfPassword.value = '';
+				// 		window.location = document.getElementById('login').href;
+				// 	}
+				}	
+			})
+
+			event.preventDefault();
+		});
+	});
+
+	function openNav() {
+	    document.getElementById("mySidenav").style.width = "250px";
+	    document.getElementById("main").style.marginLeft = "250px";
+	}
+
+	function closeNav() {
+	    document.getElementById("mySidenav").style.width = "0";
+	    document.getElementById("main").style.marginLeft= "0";
+	}
+
+	(function() {
+        var txtSearch = document.getElementById('txtSearch');
+        txtSearch.addEventListener('keypress', function(event) {
+            if (event.keyCode == 13) {
+            	alert(txtSearch.value)
+            }
+        });
+    }());
+
+    function loadRows() {
+    	var infoList = document.getElementById("info_content").textContent;
+
+    	if (infoList != "") {
+	        infoList = infoList.substring(0, infoList.length - 3)
+	        var infoArray = infoList.split("-/-")
+	        var infoItems = 0
+	        var infoCount = infoArray.length
+
+	        var table = document.getElementById("dataTable");
+	        var thead = document.createElement("thead");
+	        table.appendChild(thead);
+
+	        var h1 = document.createElement("th");
+	        var t1 = document.createTextNode("No.");
+	        var h2 = document.createElement("th");
+	        var t2 = document.createTextNode("--");
+	        h1.appendChild(t1);
+	        h2.appendChild(t2);
+	        thead.appendChild(h1);
+	        thead.appendChild(h2);
+
+
+	        var count = 1;
+	        for (var i = 0; i < infoCount; i++) {
+	        	var rowCount = document.getElementById("dataTable").getElementsByTagName("tr").length;
+	        	var row = table.insertRow(rowCount);
+	        	var cell1 = row.insertCell(0);
+				var cell2 = row.insertCell(1);
+				cell1.innerHTML = count;
+				cell2.innerHTML = infoArray[i];
+				count++;
+	        }
+	    }
+    }
+</script>
+</html>

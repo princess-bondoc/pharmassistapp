@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>PharmAssist - Sign Up</title>
+<meta charset="UTF-8">
+<link rel="icon" type="image/png" href="{{ url_for('static', filename='PhramAssist_Logo_mini.png') }}" sizes="196x196" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/signupStyle.css') }}">
+<style>
+	body {
+		background-repeat: no-repeat;
+		background-blend-mode: lighten;
+		background-attachment: fixed;
+  	background-position: center;
+  	background-size: cover;
+		font-family: "Raleway", sans-serif;
+		margin: 0px;
+		padding: 0px;
+		background-image: url({{url_for('static', filename='background.jpg')}});
+	}
+</style>
+</head>
+<body onload="window.mobilecheck();">
+	<div id="mySidenav" class="sidenav">
+	 	<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+	 	<a href="{{ url_for('home') }}">Home</a>
+	 	<a href="{{ url_for('login') }}">Login</a>
+	</div>
+
+	<div id="main">
+		<!-- <div class="d-flex justify-content-center justify-content-md-start align-items-center navbar">
+			<div class="d-flex flex-row pt-3 pl-0 pl-md-5" onclick="openNav()">
+				<p class="navtext" style="color: #000">&#9776; Pharm</p>
+				<p class="navtext" style="color: #52BDF6; margin-left: 0px">Assist</p>
+			</div> -->
+			<div class="navbar">
+				<span class="navtext" onclick="openNav()">
+					<text style="margin-left: 10%;">&#9776; Pharm</text>
+					<text style="color: #52BDF6; margin-left: -6px">Assist</text>
+				</span>
+			</div>
+		</div>
+
+		<div style="width: 100%">
+			<div class="content1">
+				<div class="logindiv">
+					<table style="height: 510px ;margin-left: auto; margin-right: auto;">
+						<tr style="height: 500px;">
+							<td style="background: rgba(32, 148, 220, 0.4); vertical-align: bottom;">
+								<table style="margin-left: auto; margin-right: auto;">
+									<tr>
+										<td style="font-size: 30px; text-align: right;color: white; font-weight: lighter;"><strong style="font-size: 60px;">CREATE</strong> YOUR <strong style="font-size: 35px;">ACCOUNT</strong></td>
+									</tr>
+									<tr>
+										<td style="padding: 40px; padding-bottom: 60px;"><img src="{{url_for('static', filename='PhramAssist_Logo_eyes.png')}}" width="154" height="120"/></td>
+									</tr>
+								</table>
+							</td>
+							<td style="padding: 20px;">
+								<form>
+									<table style="margin-left: auto; margin-right: auto;">
+										<tr style="height: 20px;">
+											<td>
+												<p id="p_error_msg" class="error-clear" style="font-size: 12px;">-</p>
+											</td>
+										</tr>
+										<!-- <tr>
+											<td>
+												<table>
+													<tr>
+														<td>
+															<input style="width: 150px;" class="fname_input" type="text" id="txtFName" name="txtFName" placeholder="First Name">
+														</td>
+														<td>
+															<input style="width: 150px;" class="noback_input" type="text" id="txtMName" name="txtMName" placeholder="Middle Name">
+														</td>
+														<td>
+															<input style="width: 150px;" class="noback_input" type="text" id="txtLName" name="txtLName" placeholder="Last Name">
+														</td>
+													</tr>
+												</table>
+											</td>
+										</tr> -->
+										<tr>
+											<td>
+												<input class="fname_input" type="text" id="txtFName" name="txtFName" placeholder="First Name">
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<input class="noback_input" type="text" id="txtMName" name="txtMName" placeholder="Middle Name">
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<input class="noback_input" type="text" id="txtLName" name="txtLName" placeholder="Last Name">
+											</td>
+										</tr>
+		<!-- 								<tr>
+											<td>
+												<input class="age_input" type="number" min="14" max="45" id="txtAge" name="txtAge" placeholder="Age">
+											</td>
+										</tr> -->
+<!-- 										<tr>
+											<td>
+												<input class="bday_input" type="text" id="txtBirthday" name="txtBirthday" placeholder="Birthday">
+											</td>
+										</tr> -->
+										<tr>
+											<td>
+												<input class="id_input" maxlength="8" minlength="8" type="text" id="txtStudNo" name="txtStudNo" placeholder="Student No.">
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<table>
+													<tr>
+														<td>
+															<input style="width: 82px;" class="day_input" minlength="1" maxlength="2" type="number" min="1" max="31" id="txtDay" name="txtDay" placeholder="Day">
+														</td>
+														<td>
+															<select class="month_select" style="width: 100px;" name="select_month" id="select_month">
+																<option disabled selected value>Month</option>
+																<option value="Jan">January</option>
+																<option value="Feb">February</option>
+																<option value="Mar">March</option>
+																<option value="Apr">April</option>
+																<option value="May">May</option>
+																<option value="Jun">June</option>
+																<option value="Jul">July</option>
+																<option value="Aug">August</option>
+																<option value="Sep">September</option>
+																<option value="Oct">October</option>
+																<option value="Nov">November</option>
+																<option value="Dec">December</option>
+															</select>
+														</td>
+														<td>
+															<input style="width: 90px;" class="year_input" minlength="4" maxlength="4" type="number" min="1953" id="txtYear" name="txtYear" placeholder="Year">
+														</td>
+													</tr>
+												</table>
+											</td>
+										</tr>
+<!-- 										<tr style="height: 14px; text-align: left;">
+											<td style="font-size: 12px; color: gray; vertical-align: top; padding-left: 53px;">
+												yyyy-mm-dd
+											</td>
+										</tr> -->
+										<tr>
+											<td>
+												<select name="select_gender" id="select_gender">
+													<option disabled selected value>Gender</option>
+													<option value="male">Male</option>
+													<option value="female">Female</option>
+												</select>
+											</td>
+										</tr>
+		<!-- 								<tr>
+											<td>
+												<input class="contact_input" type="text" id="txtContact" name="txtContact" placeholder="Contact No.">
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<input class="address_input" type="text" id="txtAddress" name="txtAddress" placeholder="Address">
+											</td>
+										</tr> -->
+		<!-- 								<tr>
+											<td>
+												<input class="email_input" type="text" id="txtEmail" name="txtEmail" placeholder="Email">
+											</td>
+										</tr> -->
+										<tr>
+											<td>
+												<input class="email_input" type="text" id="txtEmail" name="txtEmail" placeholder="Email">
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<input class="username_input" type="text" id="txtUsername" name="txtUsername" placeholder="Username">
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<input class="password_input" type="password" id="txtPassword" minlength="6" name="txtPassword" placeholder="Password">
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<input class="confpass_input" type="password" id="txtConfPassword" minlength="6" name="txtConfPassword" placeholder="Confirm Password">
+											</td>
+										</tr>
+<!-- 										<tr style="height: 10px">
+											<td style="">
+												<input type="checkbox" id="chkAgree" name="chkAgree">
+											</td>
+										</tr> -->
+<!-- 										<tr style="height: 20px; padding-top: 10px;">
+											<td>
+												<label style="color: red; font-size: 15px; text-decoration: underline; cursor: pointer;" onclick="alertAgreement();">User Agreement</label>
+											</td>
+										</tr> -->
+										<tr style="height: 10px">
+											<td>
+												<input style="width: 20px; height: 8px;" type="checkbox" name="chkAgree" id="chkAgree"><label style="color: gray; font-size: 12px;">By checking this box, you are agreeing to the
+												<label style="color: #c81d53; text-decoration: underline; cursor: pointer;" id="btnAgree">Terms of Use & Privacy Policy</label>
+												 of PharmAssist.</label><br>
+
+											</td>
+										</tr>
+										<tr style="height: 1px">
+											<td><a href="{{ url_for('confirm') }}" id="confirm"></a></td>
+										</tr>
+										<tr>
+											<td><button type="submit" class="btnsignup" id="btnRegister" onclick="IconLoad()">Register</button></td>
+										</tr>
+									</table>
+								</form>
+							</td>
+						</tr>
+
+					</table>
+				</div>
+			</div>
+
+			<!-- Modal -->
+			<div id="myModal" class="modal">
+
+			  <!-- Modal content -->
+			  <div class="modal-content">
+			    <div class="modal-header">
+			      <span class="close">&times;</span>
+			      <h2>PharmAssist: Terms of Use & Privacy Policy</h2>
+			    </div>
+			    <div class="modal-body">
+			    	<p><b>PharmAssist Disclaimer</b></p>
+			    	<p>PharmAssist is for information purposes only is NOT intended to cure illnesses, diagnose and provide treatment. Always seek the advice of your health care provider with any questions you may have regarding a medical condition or health care regimen.</p>
+			    	<p>Do not use PharmAssist in the event of an emergency or for emergency care!</p>
+			    	<!-- <p>The content of this website is for your general information and use only. It is subject to change without notice.</p> -->
+			    	<p>Neither we nor any third parties provide any warranty or guarantee as to the accuracy, timeliness, performance, completeness or suitability of the information and content found or offered on this website for any particular purpose. You acknowledge that such information and materials may contain inaccuracies or errors and we expressly exclude liability for any such inaccuracies or errors to the fullest extent permitted by law.</p>
+			    	<!-- <p>Your use of any information or content on this website is entirely at your own risk, for which we shall not be liable. It shall be your own responsibility to ensure that any information available through this website meet your specific requirements.</p> -->
+			    	<p>When you use PharmAssist, you verify that you’ve read and agree to our Terms of Use and our Privacy Policy.</p>
+			    	<p><b>Terms of Use</b></p>
+
+			    	<p style="font-weight: bold">What is this document?</p>
+			    	<p>These Terms of Use (or "TOU") are an agreement between you and PharmAssist. There are rules you agree to follow when using website(s), including when you ask questions and when you view or input content on or into the Apps.</p>
+
+			    	<p style="font-weight: bold">Why should I read it?</p>
+			    	<p>When you sign up for or use PharmAssist, you verify that you've read and agree to our Terms of Use.</p>
+
+				    <p style="font-weight: bold">Definitions:</p>
+			    	<p>&nbsp;&nbsp;&#9679; "PharmAssist", "website" or the "app" means http://www.pharmassistph.com</p>
+			    	<p>&nbsp;&nbsp;&#9679; "We", "us", or "our" means the developers of PharmAssist.</p>
+			    	<p>&nbsp;&nbsp;&#9679; "Content" means text, graphics, videos, images and any other material entered, processed, contained on or accessed through the website.</p>
+
+			    	<p style="font-weight: bold">What We Do and What We Don't Do</p>
+			    	<p>&nbsp;&nbsp;&#9679; We do support your health decisions</p>
+			    	<p>&nbsp;&nbsp;&#9679; We don't practice medicine</p>
+			    	<p>&nbsp;&nbsp;&#9679; We don't create doctor-patient relationships</p>
+			    	<p>&nbsp;&nbsp;&#9679; We are not your doctor</p>
+			    	<p>&nbsp;&nbsp;&#9679; We don't provide personal diagnosis, treatment or prescriptions</p>
+			    	<p>&nbsp;&nbsp;&#9679; We are not for use in emergencies</p>
+
+			    	<p style="font-weight: bold">Content and Services</p>
+			    	<p>&nbsp;&nbsp;&#9679; PharmAssist is a free service</p>
+			    	<p>&nbsp;&nbsp;&#9679; PharmAssist is for personal use</p>
+			    	<p>&nbsp;&nbsp;&#9679; PharmAssist must be used responsibly</p>
+			    	<p>&nbsp;&nbsp;&#9679; PharmAssist does not make recommendations</p>
+
+			    	<p style="font-weight: bold">Who are allowed to register?</p>
+			    	<p>Only adults may use PharmAssist. Minors may not create their own profiles on PharmAssist and PharmAssist does not permit any use by persons under 13 years of age.</p>
+
+				    <p><b>Privacy Policy</b></p>
+				    <p>PharmAssist values user privacy. Our Privacy Policy describes how we will protect and handle the personal information that you provide to us through our website.</p>
+
+				    <p style="font-weight: bold">Who does this apply to?</p>
+			    	<p>This Privacy Policy applies to individuals who use our free service available via the PharmAssist website.</p>
+
+			    	<p style="font-weight: bold">Why should I read it?</p>
+			    	<p>When you sign up for or use PharmAssist, you verify that you've read and agree to our Privacy Policy.</p>
+
+			    	<p style="font-weight: bold">How does PharmAssist treat privacy?</p>
+			    	<p>This Privacy Policy describes what information you can share with us, how that information is stored, and how we use that information.</p>
+
+			    	<p><b>Consent</b></p>
+			    	<p>In order to use PharmAssist, you will be asked to consent to use of your personal data for the purposes set out in this Privacy Policy. If you consent to the use and disclosure of personal data, you represent that you have the legal authority to do so.</p>
+			    	<p>After you have agreed to this Privacy Policy, by continuing to use PharmAssist, you agree to any updates to it. This means that if the Privacy Policy changes, you agree to these changes if you keep using PharmAssist.</p>
+			    	<p>You may withdraw your consent to use of your personal data for the purposes set out in this Privacy Policy at any time. To do so, submit a request to PharmAssist support (by email to pharmassistph@gmail.com).  Once your withdrawal of consent is processed, you will no longer be able to use PharmAssist.  Your withdrawal of consent will be processed without undue delay after receipt of the request.  Your withdrawal does not impact the lawfulness of any processing that occurred prior to the withdrawal.</p>
+			    	<p>PharmAssist will not use or disclose your personal information for any use or purpose not described herein without your express consent</p>
+
+			    	<p><b>Privacy and Anonymity</b></p>
+			    	<p style="font-weight: bold">Is PharmAssist Anonymous?</p>
+			    	<p>Like an in-person patient-doctor interaction, your use of PharmAssist is confidential, but not anonymous. Your Personally Identifiable Information (like your real name, date of birth, and other such information) is securely transmitted and stored by PharmAssist using an encryption.</p>
+
+			    	<p><b>Personal Information</b></p>
+			    	<p style="font-weight: bold">What information can I store in my Profile?</p>
+			    	<p>Your Profile contains the information you provide when you initiate a conversation with PharmAssist or create a PharmAssist account, including your name, date of birth, gender, username and password. PharmAssist also keeps a history of your past session results.</p>
+
+			    	<p style="font-weight: bold">How is the information in my Profile used?</p>
+			    	<p>PharmAssist uses your Profile information to help you better understand, and to present you with personalized, relevant information.</p>
+
+			    	<p style="font-weight: bold">Can I access or modify my personal information stored by PharmAssist?</p>
+			    	<p>No, currently you cannot request to edit or delete information in your Profile at any time.</p>
+
+			    	<p style="font-weight: bold">Can others see my Profile or the health information maintained by PharmAssist?</p>
+			    	<p>No, others cannot see the information stored in your PharmAssist Profile.</p>
+			    	<!-- <p>You may ask PharmAssist to forward certain parts of your Profile or health information to others such as doctors or pharmacists. PharmAssist can, with your consent,forward certain parts of your Profile or health information to doctors or pharmacists on your behalf in preparation for a consult.</p> -->
+			    	<p style="font-weight: bold">What is Personally Identifiable Information?</p>
+			    	<p>Personally Identifiable Information is information (like your full name and date of birth) that identifies who you are.</p>
+
+			    	<p style="font-weight: bold">Is my profile secure?</p>
+			    	<p>Your account and Profile information maintained by PharmAssist are secure and password protected.</p>
+
+			    	<p style="font-weight: bold">Are personal healthcare questions permitted on PharmAssist?</p>
+			    	<p>Questions and answers on PharmAssist are for general education and information. Only informational questions are permitted. For specific, personal health questions, always ask your own doctor or healthcare provider (PharmAssist is not your personal doctor or healthcare provider, and PharmAssist's answers to questions are not personal or for personal use.)</p>
+
+<!-- 			    	<p style="font-weight: bold">How long do you store Personally Identifiable Information?</p>
+			    	<p>We will store your Personally Identifiable Information until one of the following occurrences: (1) You request that the information be deleted; (2) You request that your account be deleted.</p> -->
+
+			    </div>
+			    <div class="modal-footer">
+			      <h3>&copy; 2018 PharmAssist 🇵🇭</h3>
+			    </div>
+			  </div>
+
+			</div>
+
+			<div class="footer">
+				&copy; 2018 PharmAssist 🇵🇭
+			</div>
+		</div>
+	</div>
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+	var check = "";
+
+	//Modal for terms and conditions
+    // Get the modal
+	var modal = document.getElementById('myModal');
+
+	// Get the button that opens the modal
+	var btn = document.getElementById("btnAgree");
+
+	// Get the <span> element that closes the modal
+	var span = document.getElementsByClassName("close")[0];
+
+	// When the user clicks the button, open the modal
+	btn.onclick = function() {
+	    modal.style.display = "block";
+	}
+
+	// When the user clicks on <span> (x), close the modal
+	span.onclick = function() {
+	    modal.style.display = "none";
+	}
+
+	// When the user clicks anywhere outside of the modal, close it
+	window.onclick = function(event) {
+	    if (event.target == modal) {
+	        modal.style.display = "none";
+	    }
+	}
+
+	$(document).ready(function () {
+		$("#chkAgree").click(function() {
+		    if (document.getElementById("chkAgree").checked == false) {
+				check = "false"
+			}
+			else {
+				check = "true"
+			}
+		});
+	});
+
+	$(document).ready(function() {
+		$('form').on('submit', function(event) {
+			$.ajax({
+				data: {
+					txtFName : $('#txtFName').val(),
+					txtMName : $('#txtMName').val(),
+					txtLName : $('#txtLName').val(),
+					txtDay : $('#txtDay').val(),
+					txtMonth : ($('#select_month').find('option:selected').val()),
+					txtYear : $('#txtYear').val(),
+					txtStudNo : $('#txtStudNo').val(),
+					txtEmail : $('#txtEmail').val(),
+					txtUsername : $('#txtUsername').val(),
+					txtPassword : $('#txtPassword').val(),
+					txtConfPassword : $('#txtConfPassword').val(),
+					txtGender : ($('#select_gender').find('option:selected').val()),
+					check : check
+				},
+				type: 'POST',
+				url: '/process_signup'
+			})
+
+			.done(function(data) {
+				document.getElementById("btnRegister").innerHTML = 'Register';
+				document.getElementById("p_error_msg").className = "error-div";
+				if (document.getElementById("txtFName").value == '') {
+					document.getElementById("p_error_msg").innerHTML = "Please input your first name."
+				}
+				else if (document.getElementById("txtMName").value == '') {
+					document.getElementById("p_error_msg").innerHTML = "Please input your middle name."
+				}
+				else if (document.getElementById("txtLName").value == '') {
+					document.getElementById("p_error_msg").innerHTML = "Please input your last name."
+				}
+				else if (document.getElementById("txtStudNo").value == '') {
+					document.getElementById("p_error_msg").innerHTML = "Please input your student number."
+				}
+				else if (document.getElementById("txtDay").value == '') {
+					document.getElementById("p_error_msg").innerHTML = "Please input the day of your birthdate."
+				}
+				else if (data.verify == 'M') {
+					document.getElementById("p_error_msg").innerHTML = "Please select the month of your birthdate."
+				}
+				else if (document.getElementById("txtYear").value == '') {
+					document.getElementById("p_error_msg").innerHTML = "Please input the year of your birthdate."
+				}
+				else if (data.verify == 'B') {
+					document.getElementById("p_error_msg").innerHTML = "Birthdate is invalid."
+					txtDay.value = ''
+					txtYear.value = ''
+				}
+				else if (data.verify == 'G') {
+					document.getElementById("p_error_msg").innerHTML = "Please select your gender."
+				}
+				else if (document.getElementById("txtEmail").value == '') {
+					document.getElementById("p_error_msg").innerHTML = "Please input your email."
+				}
+				else if (document.getElementById("txtUsername").value == '') {
+					document.getElementById("p_error_msg").innerHTML = "Please input your username."
+				}
+				else if (document.getElementById("txtPassword").value == '') {
+					document.getElementById("p_error_msg").innerHTML = "Please input your password."
+				}
+				else if (document.getElementById("txtConfPassword").value == '') {
+					document.getElementById("p_error_msg").innerHTML = "Please input password confirmation."
+				}
+				else {
+					document.getElementById("p_error_msg").innerHTML = "-";
+					if (data.verify == "SN") {
+						document.getElementById("p_error_msg").innerHTML = "Student No. not valid.";
+						txtStudNo.value = '';
+					}
+					else if (data.verify == "ID") {
+						document.getElementById("p_error_msg").innerHTML = "Student No. already exists.";
+						txtStudNo.value = '';
+					}
+					else if (data.verify == "EM") {
+						document.getElementById("p_error_msg").innerHTML = "Email address is already used.";
+						txtEmail.value = '';
+					}
+					else if (data.verify == "U") {
+						document.getElementById("p_error_msg").innerHTML = "Username already exists.";
+						txtUsername.value = '';
+					}
+					else if (data.verify == "P") {
+						document.getElementById("p_error_msg").innerHTML = "Passwords do not match.";
+						txtPassword.value = '';
+						txtConfPassword.value = '';
+					}
+					else if (data.verify == "C") {
+						document.getElementById("p_error_msg").innerHTML = "Please read the 'Terms of Use & Privacy Policy'."
+					}
+					else {
+						document.getElementById("p_error_msg").className = "error-clear";
+						document.getElementById("p_error_msg").innerHTML = "-";
+						txtFName.value = '';
+						txtMName.value = '';
+						txtLName.value = '';
+						txtDay.value = '';
+						txtStudNo.value = '';
+						select_month.checked = false;
+						txtYear.value = '';
+						select_gender.checked = false;
+						txtEmail.value = '';
+						txtUsername.value = '';
+						txtPassword.value = '';
+						txtConfPassword.value = '';
+						chkAgree.checked = false;
+						window.location = document.getElementById('confirm').href;
+					}
+				}
+			})
+
+			event.preventDefault();
+		});
+	});
+
+	function IconLoad() {
+		document.getElementById("btnRegister").innerHTML = ('<i class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i>');
+	}
+
+	function alertAgreement() {
+		// modal.style.display = "block";
+		// alert("USER AGREEMENT: Terms & Conditions\n\nThe content of the pages of this website is for your general information and use only. It is subject to change without notice.\n\nNeither we nor any third parties provide any warranty or guarantee as to the accuracy, timeliness, performance, completeness or suitability of the information and materials found or offered on this website for any particular purpose. You acknowledge that such information and materials may contain inaccuracies or errors and we expressly exclude liability for any such inaccuracies or errors to the fullest extent permitted by law.\n\nYour use of any information or materials on this website is entirely at your own risk, for which we shall not be liable. It shall be your own responsibility to ensure that any information available through this website meet your specific requirements.\n\nThe information from the website is NOT intended to cure illnesses, diagnose and provide treatment. Always seek the advice of your health care provider with any questions you may have regarding a medical condition or health care regimen.")
+	}
+
+	function openNav() {
+	    document.getElementById("mySidenav").style.width = "250px";
+	    document.getElementById("main").style.marginLeft = "250px";
+	}
+
+	function closeNav() {
+	    document.getElementById("mySidenav").style.width = "0";
+	    document.getElementById("main").style.marginLeft= "0";
+	}
+
+	(function() {
+        var txtSearch = document.getElementById('txtSearch');
+        txtSearch.addEventListener('keypress', function(event) {
+            if (event.keyCode == 13) {
+            	alert(txtSearch.value)
+            }
+        });
+    }());
+
+    $(document).ready(function() {
+		$("input[type=number]").on("focus", function() {
+		    $(this).on("keydown", function(event) {
+		        if (event.keyCode === 38 || event.keyCode === 40) {
+		            event.preventDefault();
+		        }
+		     });
+		   });
+		});
+</script>
+</html>

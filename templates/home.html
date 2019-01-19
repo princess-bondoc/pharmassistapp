@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>PharmAssist - Home</title>
+<meta charset="UTF-8">
+<link rel="icon" type="image/png" href="{{ url_for('static', filename='PhramAssist_Logo_mini.png') }}" sizes="196x196" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/homeStyle.css') }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+	body {
+		background-repeat: no-repeat;
+		background-blend-mode: lighten;
+		background-attachment: fixed;
+    	background-position: center;
+    	background-size: cover;
+		font-family: "Raleway", sans-serif;
+		margin: 0px;
+		padding: 0px;
+		background-image: url({{url_for('static', filename='background.jpg')}});
+	}
+</style>
+</head>
+<body onload="window.mobilecheck();">
+<!-- 	<div id="mySidenav" class="sidenav">
+	 	<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+	 	<a href="#">About</a>
+	</div> -->
+
+	<div id="main">
+		<div class="navbar">
+			<!----NAVIGATION----->
+			<span class="navtext" onclick="openNav()">
+				<text style="margin-left: 10%;">&#9776; Pharm</text>
+				<text style="color: #52BDF6; margin-left: -6px">Assist</text>
+			</span>
+			<!----SEARCH BAR----->
+<!-- 			<form id="searchForm" class="searchbar">
+				<input type="text" id="txtSearch" name="txtSearch" placeholder="Search..">
+			</form> -->
+		</div>
+
+		<div style="width: 100%">
+			<div class="content1">
+				<div class="welcome">
+					<table style="height: 200px; margin-left: auto; margin-right: auto;">
+						<tr style="height: 200px;">
+							<td><img src="{{url_for('static', filename='PhramAssist_Logo_eyes.png')}}" width="154" height="120"/></td>
+						</tr>
+						<tr style="height: 20px;">
+							<td = class="navtextwelcome">
+								<text>Welcome to </text>
+								<text style="color: white;">Pharm</text>
+								<text style="color: #52BDF6; margin-left: -2px; font-weight: bold;">Assist</text>
+							</td>
+						</tr>
+						<tr style="height: 60px; color: black; font-size: 18px; font-weight: normal;">
+							<td>
+								Identify medical information related to your symptoms.
+							</td>
+						</tr  style="height: 60px;">
+						<table style="align-self: center; margin-left: auto; margin-right: auto;">
+							<tr>
+								<td style="padding-left: 10px; padding-right: 10px;"><a href="{{ url_for('signup') }}" class="btnsignup">Sign Up</a></td>
+								<td style="padding-left: 10px; padding-right: 10px;"><a href="{{ url_for('login') }}" class="btnlogin">Log In</a></td>
+							</tr>
+						</table>
+
+					</table>
+				</div>
+			</div>
+
+			<div class="content2">
+				<table>
+					<tr>
+						<td><img src="{{url_for('static', filename='healthinfo.png')}}" width="120" height="120"/></td>
+						<td><img src="{{url_for('static', filename='symptomchecker.png')}}" width="120" height="120"/></td>
+						<td><img src="{{url_for('static', filename='medicineconsultant.png')}}" width="120" height="120"/></td>
+
+					</tr>
+					<tr style="height: 30px;">
+						<td>Health Information</td>
+						<td>Symptom Checker</td>
+						<td>Medicine Consultant</td>
+					</tr>
+					<tr style="height: 50px; font-size: 16px; font-weight: normal">
+						<td>designed to provide you with the trusted medical information</td>
+						<td>to help you understand symptoms of common illnesses</td>
+						<td>and to find out medicine names, side-effects, dosages and uses</td>
+
+					</tr>
+				</table>
+			</div>
+
+			<div class="footer">
+				&copy; 2018 PharmAssist 🇵🇭
+			</div>
+		</div>
+	</div>
+</body>
+<script>
+	function openNav() {
+	    document.getElementById("mySidenav").style.width = "250px";
+	    document.getElementById("main").style.marginLeft = "250px";
+	}
+
+	function closeNav() {
+	    document.getElementById("mySidenav").style.width = "0";
+	    document.getElementById("main").style.marginLeft= "0";
+	}
+
+	(function() {
+        var txtSearch = document.getElementById('txtSearch');
+        txtSearch.addEventListener('keypress', function(event) {
+            if (event.keyCode == 13) {
+            	alert(txtSearch.value)
+            }
+        });
+    }());
+</script>
+</html>

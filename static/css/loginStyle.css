@@ -1,0 +1,292 @@
+.text-conf {
+	text-decoration: underline;
+	font-size: 13px;
+	font-weight: 600;
+	color: #1b9863;
+}
+
+.text-conf:hover { color: #27AE75 }
+
+.text-conf i { text-decoration: underline }
+
+.text-note {
+	max-width: 300px;
+	color: #818B93;
+	font-size: 14px;
+	font-weight: lighter;
+}
+
+.error-div {
+	max-width: 200px;
+	margin: 0 auto;
+	font-size: 13px;
+	color: #C92E45;
+	background-color: #fcc8d0;
+	padding: 7px;
+	border-radius: 20px;
+	border: 2px solid #C92E45;
+}
+
+.error-clear {
+	max-width: 200px;
+	margin: 0 auto;
+	font-size: 13px;
+	color: transparent;
+	background-color: transparent;
+	padding: 7px;
+	border-radius: 20px;
+	border: 2px solid transparent;
+}
+
+.error-close {
+	max-width: 200px;
+	margin: 0 auto;
+	font-size: 13px;
+	color: #16A072;
+	background-color: #c6ffec;
+	padding: 7px;
+	border-radius: 20px;
+	border: 2px solid #16A072;
+}
+
+.hide {
+	display: none;
+}
+
+.show {
+	display: block;
+}
+
+.navtext {
+	letter-spacing: -1px;
+	font-size: 28px;
+	font-weight: bold;
+	cursor: pointer;
+}
+
+.line1 {
+	width: 100%;
+	height: 6px;
+	background-color: #1E1E1E;
+	color: white;
+	position: fixed;
+}
+.navbar {
+	width: 100%;
+	padding: 12px;
+	position: fixed;
+	background: rgba(255, 255, 255, 1);
+}
+
+.sidenav {
+	height: 100%;
+	width: 0;
+	position: fixed;
+	z-index: 1;
+	top: 0;
+	left: 0;
+	background-color: #54bbf3;
+	overflow-x: hidden;
+	transition: 0.5s;
+	padding-top: 60px;
+}
+
+.sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: white;
+    display: block;
+    transition: 0.3s;
+}
+
+.sidenav a:hover {
+    color: black;
+}
+
+.sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+
+#main {
+    transition: margin-left .5s;
+    padding: 0px;
+}
+
+input[type=text] {
+    width: 250px;
+    box-sizing: border-box;
+    border: 2px solid #bcc9d6;
+    border-radius: 4px;
+    font-size: 16x;
+    background-color: white;
+    background-image: url('search.png');
+    background-position: 8px 8px;
+    background-repeat: no-repeat;
+    padding: 6px 6px 6px 30px;
+    -webkit-transition: width 0.4s ease-in-out;
+    transition: width 0.4s ease-in-out;
+}
+
+.navbar .searchbar input:focus {
+	border: 2px solid #52BDF6;
+}
+
+.searchbar {
+	float: right;
+	margin-right: 10%;
+	padding: 5px;
+}
+
+.content1 {
+	width: 100%;
+	height: 800px;
+	background: rgba(68, 198, 242, 0.3);
+	margin-left: auto;
+	margin-right: auto;
+	display: flex;
+  	justify-content: center;
+}
+
+.logindiv {
+	margin-top: -80px;
+	align-self: center;
+	height: 450px;
+	width: 655px;
+	min-width: 300px;
+	background: rgba(255, 255, 255, 0.65);
+}
+
+.logindiv .username_input {
+    width: 320px;
+    height: 42px;
+    box-sizing: border-box;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    border-bottom: 2px solid #bcc9d6;
+    border-radius: 0px;
+    font-size: 16px;
+    background: transparent;
+    background-image: url('user.png');
+    background-position: 5px 5px;
+    background-repeat: no-repeat;
+    padding: 6px 6px 6px 45px;
+    -webkit-transition: width 0.4s ease-in-out;
+    transition: width 0.4s ease-in-out;
+}
+
+.content1 .logindiv input:focus {
+	border-bottom: 2px solid #52BDF6;
+}
+
+.logindiv .password_input {
+    width: 320px;
+    height: 42px;
+    box-sizing: border-box;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    border-bottom: 2px solid #bcc9d6;
+    border-radius: 0px;
+    font-size: 16px;
+    background: transparent;
+    background-image: url('password.png');
+    background-position: 5px 5px;
+    background-repeat: no-repeat;
+    padding: 6px 6px 6px 45px;
+    -webkit-transition: width 0.4s ease-in-out;
+    transition: width 0.4s ease-in-out;
+}
+
+.logindiv .code_input {
+    width: 320px;
+    height: 42px;
+    box-sizing: border-box;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    border-bottom: 2px solid #bcc9d6;
+    border-radius: 0px;
+    font-size: 16px;
+    background: transparent;
+    background-image: url('confpass.png');
+    background-position: 5px 5px;
+    background-repeat: no-repeat;
+    padding: 6px 6px 6px 45px;
+    -webkit-transition: width 0.4s ease-in-out;
+    transition: width 0.4s ease-in-out;
+}
+
+.logindiv .btnlogin {
+	width: 320px;
+    background-color: #3498db;
+    border: none;
+    color: white;
+    padding: 15px 38px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 20px 2px;
+    cursor: pointer;
+}
+
+table {
+	color: white;
+	margin-top: auto;
+	margin-bottom: auto;
+	text-align: center;
+	font-weight: bold;
+	font-size: 18px;
+	align-self: center;
+}
+
+tr {
+	height: 50px;
+	margin: auto 0;
+}
+
+td {
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+p {
+    font-size: 14px;
+    color: #c81d53;
+}
+
+.footer {
+	color: white;
+	width: 100%;
+	height: 80px;
+	line-height: 80px;
+	text-align: center;
+	vertical-align: middle;
+	font-weight: bold;
+	font-size: 18px;
+	background: rgba(29, 120, 200, 1);
+	margin-left: auto;
+	margin-right: auto;
+}
+
+@media screen and (max-height: 500px) {
+  	.sidenav {padding-top: 15px;}
+  	.sidenav a {font-size: 18px;}
+  	.navbar .searchbar {float: none;}
+  	.navbar span .navtext text, .navbar form{
+  		display: table-cell;
+   		vertical-align: middle;
+  		float: none;
+  		display: block;
+  		text-align: center;
+	    width: 100%;
+	    margin: auto;
+	    padding: 14px;
+  	}
+}

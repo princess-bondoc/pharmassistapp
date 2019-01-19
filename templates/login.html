@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>PharmAssist - Login</title>
+<meta charset="UTF-8">
+<link rel="icon" type="image/png" href="{{ url_for('static', filename='PhramAssist_Logo_mini.png') }}" sizes="196x196" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/loginStyle.css') }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+<style>
+	body {
+		background-repeat: no-repeat;
+		background-blend-mode: lighten;
+		background-attachment: fixed;
+  	background-position: center;
+  	background-size: cover;
+		font-family: "Raleway", sans-serif;
+		margin: 0px;
+		padding: 0px;
+		background-image: url({{url_for('static', filename='background.jpg')}});
+	}
+</style>
+</head>
+<body>
+	<div id="mySidenav" class="sidenav">
+	 	<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+	 	<a href="{{ url_for('home') }}">Home</a>
+	 	<a href="{{ url_for('signup') }}">Sign Up</a>
+	</div>
+
+	<div id="main">
+		<div class="navbar">
+			<!----NAVIGATION----->
+			<span class="navtext" onclick="openNav()">
+				<text style="margin-left: 10%;">&#9776; Pharm</text>
+				<text style="color: #52BDF6; margin-left: -6px">Assist</text>
+			</span>
+			<!----SEARCH BAR----->
+<!-- 			<form id="searchForm" class="searchbar">
+				<input type="text" id="txtSearch" name="txtSearch" placeholder="Search..">
+			</form> -->
+		</div>
+
+		<div style="width: 100%">
+			<div class="content1">
+				<div class="logindiv">
+					<form>
+						<table style="height: 450px; margin-left: auto; margin-right: auto;">
+							<tr style="height: 440px;">
+								<td style="background: rgba(32, 148, 220, 0.4); vertical-align: bottom;">
+									<table>
+										<tr>
+											<td style="font-size: 30px; text-align: right;color: white; font-weight: lighter;">
+												<strong style="font-size: 60px;">LOGIN</strong><br> TO YOUR
+												<strong style="font-size: 35px;">ACCOUNT</strong></td>
+										</tr>
+										<tr>
+											<td style="padding: 40px;"><img src="{{url_for('static', filename='PhramAssist_Logo_eyes.png')}}" width="154" height="120"/></td>
+										</tr>
+									</table>
+								</td>
+								<td>
+									<table>
+										<tr>
+											<td style="height: 10px;">
+												<p class="error-clear" id="p_error_msg">-</p>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<input class="username_input" type="text" id="txtUsername" name="txtUsername" placeholder="Username">
+												<input class="code_input hide" type="text" id="txtCode" name="txtCode" placeholder="Login Code">
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<input class="password_input" type="password" id="txtPassword" name="txtPassword" placeholder="Password">
+											</td>
+										</tr>
+										<tr style="height: 10px">
+											<td><a href="{{ url_for('chat') }}" id="user"></a></td>
+										</tr>
+										<tr style="height: 10px">
+											<td><a href="{{ url_for('admin') }}" id="admin"></a></td>
+										</tr>
+										<tr style="height: 10px">
+											<td><a href="{{ url_for('home') }}" id="home"></a></td>
+										</tr>
+										<tr>
+											<td><button type="submit" class="btnlogin" id="btnLogin" onclick="IconLoad()">Log In</button></td>
+										</tr>
+										<tr style="height: 10px">
+											<td><p class="text-note">If you have not yet validated your account, click this link <a class="text-conf" href="{{ url_for('confirm') }}" id="confirm"><i class="far fa-envelope"></i> Confirm Account</a></p></td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+
+						</table>
+					</form>
+				</div>
+			</div>
+
+			<div class="footer">
+				&copy; 2018 PharmAssist 🇵🇭
+			</div>
+		</div>
+	</div>
+</body>
+<script>
+	$(document).ready(function() {
+		$('form').on('submit', function(event) {
+			$.ajax({
+				data: {
+					txtUsername : $('#txtUsername').val(),
+					txtPassword : $('#txtPassword').val(),
+					txtCode : $('#txtCode').val()
+				},
+				type: 'POST',
+				url: '/process_login'
+			})
+
+			.done(function(data) {
+				document.getElementById("btnLogin").innerHTML = 'Log In';
+				document.getElementById("p_error_msg").className = "error-div";
+				if (document.getElementById("txtUsername").value == '') {
+					document.getElementById("p_error_msg").innerHTML = "Please input your username."
+				}
+				else if (document.getElementById("txtPassword").value == '') {
+					document.getElementById("p_error_msg").innerHTML = "Please input your password."
+				}
+				else {
+					if (data.verify == "noverif") {
+						document.getElementById("p_error_msg").innerHTML = "Account not yet confirmned."
+					}
+					else if (data.verify == "dis") {
+						alert("Sorry your account is temporarily disabled. Please try again later. \nYou will now be redirected to the home page.")
+						window.location = document.getElementById('home').href;
+					}
+					else if (data.verify == "W") {
+						alert("You have reach the maximum no. of login attempts in this session. \nYou will now be redirected to the home page.");
+						window.location = document.getElementById('home').href;
+					}
+					else if (data.verify == "P") {
+						document.getElementById("p_error_msg").innerHTML = "Password is incorrect.";
+						txtPassword.value = '';
+					}
+					else if (data.verify == "U") {
+						document.getElementById("p_error_msg").innerHTML = "Username does not exist.";
+					}
+					else if (data.verify == "LE") {
+						document.getElementById("p_error_msg").innerHTML = "Please input login code.";
+					}
+					else if (data.verify == "LI") {
+						document.getElementById("p_error_msg").innerHTML = "Login code incorrect.";
+						txtCode.value = '';
+					}
+					else if (data.verify == "EC") {
+						document.getElementById("p_error_msg").className = "error-close";
+						document.getElementById("p_error_msg").innerHTML = "Please enter login code sent to your email.";
+						document.getElementById("txtUsername").className = "hide";
+						document.getElementById("txtPassword").className = "hide";
+						document.getElementById("txtCode").className = "code_input";
+					}
+					else {
+						document.getElementById("p_error_msg").className = "error-close";
+						document.getElementById("p_error_msg").innerHTML = "Login Successful!";
+						if (data.verify == "user") {
+							window.location = document.getElementById('user').href;
+						}
+						else if (data.verify == "admin") {
+							window.location = document.getElementById('admin').href;
+						}
+					}
+				}
+
+			})
+
+			event.preventDefault();
+		});
+	});
+
+	function IconLoad() {
+		document.getElementById("btnLogin").innerHTML = ('<i class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i>');
+	}
+
+	function openNav() {
+	    document.getElementById("mySidenav").style.width = "250px";
+	    document.getElementById("main").style.marginLeft = "250px";
+	}
+
+	function closeNav() {
+	    document.getElementById("mySidenav").style.width = "0";
+	    document.getElementById("main").style.marginLeft= "0";
+	}
+
+	(function() {
+        var txtSearch = document.getElementById('txtSearch');
+        txtSearch.addEventListener('keypress', function(event) {
+            if (event.keyCode == 13) {
+            	alert(txtSearch.value)
+            }
+        });
+    }());
+</script>
+</html>

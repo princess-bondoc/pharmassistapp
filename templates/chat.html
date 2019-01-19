@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>PharmAssist</title>
+<meta charset="UTF-8">
+<link rel="icon" type="image/png" href="{{ url_for('static', filename='PhramAssist_Logo_mini.png') }}" sizes="196x196" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/chatStyle.css') }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script
+			  src="https://code.jquery.com/jquery-3.3.1.min.js"
+			  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+			  crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+<style>
+	body {
+		background-repeat: no-repeat;
+		background-blend-mode: lighten;
+		background-attachment: fixed;
+    	background-position: center;
+    	background-size: cover;
+		font-family: "Raleway", sans-serif;
+		margin: 0px;
+		padding: 0px;
+		background-image: url({{url_for('static', filename='background.jpg')}});
+	}
+	textarea {
+		font-family: "Raleway", sans-serif;
+	}
+</style>
+</head>
+<body onload="loadClassButtons(); loadNews();">
+	<div id="mySidenav" class="sidenav">
+	 	<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+	 	<a href="{{ url_for('login') }}">Logout</a>
+	</div>
+
+	<div id="main">
+		<div class="navbar">
+			<!----NAVIGATION----->
+			<span class="navtext" onclick="openNav()">
+				<text style="margin-left: 10%;">&#9776; Pharm</text>
+				<text style="color: #52BDF6; margin-left: -6px">Assist</text>
+			</span>
+			<div class="divStartOver">
+				<form id="formstartover" name="formstartover">
+					<button type="submit">Start Over</button>
+				</form>
+			</div>
+		</div>
+
+		<div style="width: 100%">
+			<div class="content1" id="content1">
+				<div class="chatbox" id="chatbox">
+					<div class="chatlogs" id="chatlogs">
+
+						<div class="chatself">
+							<div class="userphoto">
+								<img src="{{ url_for('static', filename='PhramAssist_Logo_mini.png') }}">
+							</div>
+							<p class="message">{{ msg }}</p>
+						</div>
+
+					</div>
+
+					<div class="chatform">
+						<form id="formchat" name="formchat">
+							<textarea type="text" name="txtMessage" id="txtMessage" placeholder="Type a message..."></textarea>
+							<button type="submit" id="btnSend">Send</button>
+						</form>
+					</div>
+				</div>
+
+				<div class="newsdiv">
+					<h1>Recent News Articles</h1>
+				</div>
+			</div>
+			<h2 id="news_content">{{news}}</h2>
+			<div class="footer">
+				&copy; 2018 PharmAssist 🇵🇭
+			</div>
+		</div>
+	</div>
+</body>
+<script>
+	var ans = "", cat = "";
+	var input = document.getElementById("txtMessage");
+
+	input.addEventListener("keyup", function(event) {
+	  event.preventDefault();
+	  if (event.keyCode === 13) {
+	    document.getElementById("btnSend").click();
+	  }
+	});
+
+	$(document).ready(function() {
+		$(formchat).on('submit', function(event) {
+			$.ajax({
+				data: {
+					txtMessage : $('#txtMessage').val()
+				},
+				type: 'POST',
+				url: '/process_message'
+			})
+
+			.done(function(data) {
+				responseUser();
+				var response = data.message;
+				var checkYN = response.endsWith("YN");
+				var checkSO = response.endsWith("SO");
+
+				if (checkYN) {
+					response = response.substring(0, response.length - 2);
+				}
+
+				if (checkSO) {
+					response = response.substring(0, response.length - 2);
+				}
+
+				var responseArray = response.split("-/-")
+				for (var i = 0; i < responseArray.length; i++) {
+					responseSelf(responseArray[i]);
+				}
+
+				if (checkYN) {
+					loadYNButtons();
+				}
+
+				if(checkSO) {
+					loadClassButtons();
+				}
+
+				var currentDiv = document.getElementById("chatlogs");
+				currentDiv.scrollTop = currentDiv.scrollHeight - currentDiv.clientHeight;
+			})
+
+			event.preventDefault();
+		});
+	});
+
+	Element.prototype.remove = function() {
+	    this.parentElement.removeChild(this);
+	}
+	NodeList.prototype.remove = HTMLCollection.prototype.remove = function() {
+	    for(var i = this.length - 1; i >= 0; i--) {
+	        if(this[i] && this[i].parentElement) {
+	            this[i].parentElement.removeChild(this[i]);
+	        }
+	    }
+	}
+
+	function responseUser() {
+		if (document.getElementById("txtMessage").value != '') {
+			var txtMessage = document.getElementById('txtMessage');
+			var msgNode = document.createTextNode(String(txtMessage.value));
+
+			var chatuser_div = document.createElement('div');
+			chatuser_div.className = "chatuser";
+			var userphoto_div = document.createElement('div');
+			userphoto_div.className = "userphoto";
+			var userphoto_img = document.createElement('img');
+			userphoto_img.src = "{{ url_for('static', filename='user.png') }}";
+			var message_p = document.createElement('p');
+			message_p.className = "message";
+
+			message_p.appendChild(msgNode);
+			userphoto_div.appendChild(userphoto_img);
+			chatuser_div.appendChild(userphoto_div);
+			chatuser_div.appendChild(message_p);
+			var currentDiv = document.getElementById("chatlogs");
+			$(currentDiv).append(chatuser_div);
+			currentDiv.scrollTop = currentDiv.scrollHeight - currentDiv.clientHeight;
+			txtMessage.value = '';
+		}
+		else {
+			alert('No message inputted.')
+		}
+
+	}
+
+	function loadYNButtons() {
+		document.getElementById("txtMessage").disabled = true;
+		var msgY = document.createTextNode(String("Yes"));
+		var msgN = document.createTextNode(String("No"));
+		var yes_btn = document.createElement('button');
+		var no_btn = document.createElement('button');
+		var btn_form = document.createElement('form');
+		var btn_div = document.createElement('div');
+		btn_div.className = "chatbuttons";
+		yes_btn.appendChild(msgY);
+		no_btn.appendChild(msgN);
+		yes_btn.type = "submit";
+		no_btn.type = "submit";
+		yes_btn.onclick = function(){ans = "Yes"};
+		no_btn.onclick = function(){ans = "No"};
+		btn_form.name = "btn_form";
+		btn_form.id = "btn_form";
+		btn_form.appendChild(yes_btn);
+		btn_form.appendChild(no_btn);
+
+		btn_form.onsubmit = function(event){
+			$.ajax({
+				data: {
+					answer : ans
+				},
+				type: 'POST',
+				url: '/process_yn_buttons'
+			})
+
+			.done(function(data) {
+				txtMessage.value = ans;
+				ans = "";
+				document.getElementById('btnSend').click();
+				document.getElementsByClassName("chatbuttons").remove();
+				document.getElementById("txtMessage").disabled = false;
+			})
+			event.preventDefault();}
+
+		btn_div.appendChild(btn_form);
+		var currentDiv = document.getElementById("chatlogs");
+		$(currentDiv).append(btn_div);
+	}
+
+	function loadClassButtons() {
+		document.getElementById("txtMessage").disabled = true;
+		var msgD = document.createTextNode(String("Definition"));
+		var msgS = document.createTextNode(String("Symptom Checker"));
+		var msgM = document.createTextNode(String("Medicine Inquiry"));
+		var def_btn = document.createElement('button');
+		var symp_btn = document.createElement('button');
+		var med_btn = document.createElement('button');
+		var btn_class_form = document.createElement('form');
+		var btn_div = document.createElement('div');
+		btn_div.className = "chatbuttonclasses";
+		def_btn.appendChild(msgD);
+		symp_btn.appendChild(msgS);
+		med_btn.appendChild(msgM);
+		def_btn.type = "submit";
+		symp_btn.type = "submit";
+		med_btn.type = "submit";
+		def_btn.onclick = function(){cat = "Definition"};
+		symp_btn.onclick = function(){cat = "Symptom Checker"};
+		med_btn.onclick = function(){cat = "Medicine Inquiry"};
+		btn_class_form.name = "btn_class_form";
+		btn_class_form.id = "btn_class_form";
+		btn_class_form.appendChild(def_btn);
+		btn_class_form.appendChild(symp_btn);
+		btn_class_form.appendChild(med_btn);
+
+		btn_class_form.onsubmit = function(event){
+			$.ajax({
+				data: {
+					category : cat
+				},
+				type: 'POST',
+				url: '/process_class_buttons'
+			})
+
+			.done(function(data) {
+				txtMessage.value = cat;
+				cat = "";
+				document.getElementById('btnSend').click();
+				document.getElementsByClassName("chatbuttonclasses").remove();
+				document.getElementById("txtMessage").disabled = false;
+			})
+			event.preventDefault();}
+
+		btn_div.appendChild(btn_class_form);
+		var currentDiv = document.getElementById("chatlogs");
+		$(currentDiv).append(btn_div);
+	}
+
+	function responseSelf(msg) {
+		var msgNode = document.createTextNode(msg);
+
+		var chatuser_div = document.createElement('div');
+		chatuser_div.className = "chatself";
+		var userphoto_div = document.createElement('div');
+		userphoto_div.className = "userphoto";
+		var userphoto_img = document.createElement('img');
+		userphoto_img.src = "{{ url_for('static', filename='PhramAssist_Logo_mini.png') }}";
+		var message_p = document.createElement('p');
+		message_p.className = "message";
+
+		message_p.appendChild(msgNode);
+		userphoto_div.appendChild(userphoto_img);
+		chatuser_div.appendChild(userphoto_div);
+		chatuser_div.appendChild(message_p);
+		var currentDiv = document.getElementById("chatlogs");
+		$(currentDiv).append(chatuser_div);
+		currentDiv.scrollTop = currentDiv.scrollHeight - currentDiv.clientHeight;
+	}
+
+	function openNav() {
+	    document.getElementById("mySidenav").style.width = "250px";
+	    document.getElementById("main").style.marginLeft = "250px";
+	}
+
+	function closeNav() {
+	    document.getElementById("mySidenav").style.width = "0";
+	    document.getElementById("main").style.marginLeft= "0";
+	}
+
+	(function() {
+        var txtSearch = document.getElementById('txtSearch');
+        txtSearch.addEventListener('keypress', function(event) {
+            if (event.keyCode == 13) {
+            	alert(txtSearch.value)
+            }
+        });
+    }());
+
+    $(document).ready(function() {
+		$(formstartover).on('submit', function(event) {
+			$.ajax({
+				data: {
+					action : "reset"
+				},
+				type: 'POST',
+				url: '/process_startover'
+			})
+
+			.done(function(data) {
+				loadClassButtons();
+				var currentDiv = document.getElementById("chatlogs");
+				currentDiv.scrollTop = currentDiv.scrollHeight - currentDiv.clientHeight;
+			})
+
+			event.preventDefault();
+		});
+	});
+
+    $('#txtMessage').keypress(function(e){
+	  if(e.keyCode == 13 && !e.shiftKey) {
+	   document.getElementById('btnSend').click();
+	  }
+	});
+
+	function loadNews() {
+		var newsList = document.getElementById("news_content").textContent;
+
+		if (newsList != "") {
+	        newsList = newsList.substring(0, newsList.length - 3)
+	        var newsArray = newsList.split("-/-")
+	        var newsItems = 0
+	        var newsCount = newsArray.length
+
+	        for (var i = 0; i < newsCount; i++) {
+	        	var author_date_Str = "";
+	        	var news_div = document.createElement('div');
+				news_div.className = "newsarticle";
+	        	var msgNode1 = document.createTextNode(newsArray[i]);
+	        	i += 1;
+
+				var a_news = document.createElement('a');
+				a_news.className = "news_a";
+				a_news.href = newsArray[i];
+				a_news.target = "_blank";
+				var text_news = document.createElement('text');
+				text_news.className = "news_text";
+				i += 1;
+
+				var img_news = document.createElement('img');
+				img_news.className = "news_img";
+				img_news.src = newsArray[i];
+				img_news.alt = "img";
+				// img_news.alt = "https://cdn3.iconfinder.com/data/icons/linecons-free-vector-icons-pack/32/news-512.png";
+				i += 1;
+				author_date_Str += " - "+ newsArray[i];
+				var msgNode2 = document.createTextNode(author_date_Str);
+
+				a_news.appendChild(msgNode1);
+				text_news.appendChild(msgNode2);
+				a_news.appendChild(text_news);
+				news_div.appendChild(img_news);
+				news_div.appendChild(a_news);
+				var currentDiv = document.getElementsByClassName("newsdiv");
+				$(currentDiv).append(news_div);
+			}
+		}
+	}
+
+</script>
+</html>

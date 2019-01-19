@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>PharmAssist - Confirm Account</title>
+<meta charset="UTF-8">
+<link rel="icon" type="image/png" href="{{ url_for('static', filename='PhramAssist_Logo_mini.png') }}" sizes="196x196" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/confirmStyle.css') }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+<style>
+	body {
+		background-repeat: no-repeat;
+		background-blend-mode: lighten;
+		background-attachment: fixed;
+  	background-position: center;
+  	background-size: cover;
+		font-family: "Raleway", sans-serif;
+		margin: 0px;
+		padding: 0px;
+		background-image: url({{url_for('static', filename='background.jpg')}});
+	}
+</style>
+</head>
+<body>
+	<div id="mySidenav" class="sidenav">
+	 	<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+	 	<a href="{{ url_for('home') }}">Home</a>
+	 	<a href="{{ url_for('signup') }}">Sign Up</a>
+		<a href="{{ url_for('login') }}">Login</a>
+	</div>
+
+	<div id="main">
+		<div class="navbar">
+			<span class="navtext" onclick="openNav()">
+				<text style="margin-left: 10%;">&#9776; Pharm</text>
+				<text style="color: #52BDF6; margin-left: -6px">Assist</text>
+			</span>
+		</div>
+
+		<div style="width: 100%">
+			<div class="content1">
+				<div class="logindiv">
+						<div class="container">
+							<img src="{{url_for('static', filename='PhramAssist_Logo_eyes.png')}}" width="154" height="120"/>
+							<p class="text-title">Thank you for signing up!</p>
+							<p class="text-content">We have sent an email with a confirmation code to your email address. Please input your username and the code below.</p>
+							<a href="{{ url_for('login') }}" id="login"></a>
+							<p class="stat-clear" id="stat">--</p>
+							<form id="form-conf">
+								<div class="code-div" id="code-div">
+									<input type="text" name="txtUsername" id="txtUsername" placeholder="Username">
+									<input type="text" maxlength="6" name="txtCode" id="txtCode" placeholder="Code">
+									<button class="btn-code" type="submit" name="btnOk" id="btnOk" onclick="IconLoad()">CONFIRM</button>
+								</div>
+							</form>
+							<form class="hide" id="form-resend">
+								<div class="code-div" id="code-div">
+									<input type="text" name="txtUsernameR" id="txtUsernameR" placeholder="Username">
+									<input type="text" name="txtEmail" id="txtEmail" placeholder="Email address">
+									<button class="btn-code" type="submit" name="btnSend" id="btnSend" onclick="IconLoadSend()">SEND</button>
+								</div>
+							</form>
+							<button class="btn-resend" type="button" name="btnResend" id="btnResend" onclick="ResendCode()">Resend Confirmation Code</button>
+							<button class="btn-resend hide" type="button" name="btnConf" id="btnConf" onclick="EnterCode()">Enter Confirmation Code</button>
+							<p id="note" class="gray-text">Note: You can fully access PharmAssist once the code is validated.</p>
+						</div>
+				</div>
+			</div>
+			<!-- <img src="https://drive.google.com/uc?export=view&id=1gHlJX9jh_oRy2RIYR3r1TzGTlrW5X5CG" width="54" height="42"> -->
+			<div class="footer">
+				&copy; 2018 PharmAssist 🇵🇭
+			</div>
+		</div>
+	</div>
+</body>
+<script>
+	var formConfirm = document.getElementById('form-conf');
+	var formResend = document.getElementById('form-resend');
+	$(document).ready(function() {
+		$(formConfirm).on('submit', function(event) {
+			$.ajax({
+				data: {
+					txtUsername : $('#txtUsername').val(),
+					txtCode : $('#txtCode').val()
+				},
+				type: 'POST',
+				url: '/process_confirm'
+			})
+
+			.done(function(data) {
+				document.getElementById("btnOk").innerHTML = 'CONFIRM';
+				document.getElementById("stat").className = 'stat-red';
+
+				if (document.getElementById("txtUsername").value == '') {
+					document.getElementById("stat").innerHTML = 'Please enter your username.';
+				}
+				else if (document.getElementById("txtCode").value == '') {
+					document.getElementById("stat").innerHTML = 'Please enter your email address.';
+				}
+				else {
+					if (data.verify == "T") {
+						document.getElementById("stat").className = 'stat-green';
+						document.getElementById("stat").innerHTML = 'Account Validated!';
+						window.location = document.getElementById('login').href;
+					}
+					else if (data.verify == "V") {
+						document.getElementById("stat").innerHTML = 'Account has already been confirmed.';
+						txtUsername.value = '';
+						txtCode.value = '';
+					}
+					else if (data.verify == "A") {
+						document.getElementById("stat").innerHTML = 'Account username does not exist.';
+					}
+					else {
+						document.getElementById("stat").innerHTML = 'Confirmation Failed. Code is invalid.';
+					}
+				}
+			})
+
+			event.preventDefault();
+		});
+	});
+
+	$(document).ready(function() {
+		$(formResend).on('submit', function(event) {
+			$.ajax({
+				data: {
+					txtUsernameR : $('#txtUsernameR').val(),
+					txtEmail : $('#txtEmail').val()
+				},
+				type: 'POST',
+				url: '/process_resend'
+			})
+
+			.done(function(data) {
+				document.getElementById("btnSend").innerHTML = 'SEND';
+				document.getElementById("stat").className = 'stat-red';
+
+				if (document.getElementById("txtUsernameR").value == '') {
+					document.getElementById("stat").innerHTML = 'Please enter your username.';
+				}
+				else if (document.getElementById("txtEmail").value == '') {
+					document.getElementById("stat").innerHTML = 'Please enter your email address.';
+				}
+				else {
+					if (data.verify == "T") {
+						document.getElementById("stat").className = 'stat-green';
+						document.getElementById("stat").innerHTML = 'Code Confirmation Sent! Please check your email.';
+						txtUsernameR.value = '';
+						txtEmail.value = '';
+						formResend.className = "hide";
+						formConfirm.className = "show";
+						document.getElementById("btnConf").className = "hide";
+						document.getElementById("btnResend").className = "btn-resend";
+						document.getElementById("note").innerHTML = "Note: You can fully access PharmAssist once the code is validated.";
+					}
+					else if (data.verify == "V") {
+						document.getElementById("stat").innerHTML = 'Account has already been confirmed.';
+						txtUsernameR.value = '';
+						txtEmail.value = '';
+					}
+					else if (data.verify == "A") {
+						document.getElementById("stat").innerHTML = 'Account username does not exist.';
+					}
+					else {
+						document.getElementById("stat").innerHTML = 'Resend Failed.';
+					}
+				}
+			})
+
+			event.preventDefault();
+		});
+	});
+
+	function IconLoad() {
+		document.getElementById("btnOk").innerHTML = ('<i class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i>');
+	}
+
+	function IconLoadSend() {
+		document.getElementById("btnSend").innerHTML = ('<i class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i>');
+	}
+
+	function ResendCode() {
+		document.getElementById("stat").className = 'stat-clear';
+		formResend.className = "show";
+		formConfirm.className = "hide";
+		document.getElementById("btnResend").className = "hide";
+		document.getElementById("btnConf").className = "btn-resend";
+		document.getElementById("note").innerHTML = "Note: If you entered the wrong email address, you can change it by entering a new one.";
+	}
+
+	function EnterCode() {
+		document.getElementById("stat").className = 'stat-clear';
+		formResend.className = "hide";
+		formConfirm.className = "show";
+		document.getElementById("btnConf").className = "hide";
+		document.getElementById("btnResend").className = "btn-resend";
+		document.getElementById("note").innerHTML = "Note: You can fully access PharmAssist once the code is validated.";
+	}
+
+	function popMessage() {
+	  var popup = document.getElementById("popMsg");
+	  popup.classList.toggle("show");
+	}
+
+	function openNav() {
+	    document.getElementById("mySidenav").style.width = "250px";
+	    document.getElementById("main").style.marginLeft = "250px";
+	}
+
+	function closeNav() {
+	    document.getElementById("mySidenav").style.width = "0";
+	    document.getElementById("main").style.marginLeft= "0";
+	}
+
+	(function() {
+        var txtSearch = document.getElementById('txtSearch');
+        txtSearch.addEventListener('keypress', function(event) {
+            if (event.keyCode == 13) {
+            	alert(txtSearch.value)
+            }
+        });
+    }());
+</script>
+</html>

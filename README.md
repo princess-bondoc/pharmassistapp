@@ -1,2 +1,1 @@
-# pharmassistapp
-med-chatbot
+"# This is my README" 

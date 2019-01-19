@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>PharmAssist - Admin</title>
+<meta charset="UTF-8">
+<link rel="icon" type="image/png" href="{{ url_for('static', filename='PhramAssist_Logo_mini.png') }}" sizes="196x196" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/adminStyle.css') }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script
+			  src="https://code.jquery.com/jquery-3.3.1.min.js"
+			  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+			  crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+<style>
+	body {
+		background-repeat: no-repeat;
+		background-blend-mode: lighten;
+		background-attachment: fixed;
+    	background-position: center;
+    	background-size: cover;
+		font-family: "Raleway", sans-serif;
+		margin: 0px;
+		padding: 0px;
+		background-image: url({{url_for('static', filename='background.jpg')}});
+	}
+</style>
+</head>
+<body onload="loadNews();">
+	<div id="mySidenav" class="sidenav">
+	 	<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+	 	<a href="{{ url_for('login') }}">Logout</a>
+	</div>
+
+	<div id="main">
+		<div class="navbar">
+			<!----NAVIGATION----->
+			<span class="navtext" onclick="openNav()">
+				<text style="margin-left: 10%;">&#9776; Pharm</text>
+				<text style="color: #52BDF6; margin-left: -6px">Assist</text>
+			</span>
+		</div>
+
+		<div style="width: 100%">
+			<div class="content1">
+				<div class="welcome">
+					<table style="height: 200px; margin-left: auto; margin-right: auto;">
+						<tr style="height: 200px;">
+							<td><img src="{{url_for('static', filename='PhramAssist_Logo_eyes.png')}}" width="154" height="120"/></td>
+						</tr>
+						<tr style="height: 20px;">
+							<td = class="navtextwelcome">
+								<text>{{ msg }}</text>
+							</td>
+						</tr>
+						<table style="align-self: center; margin-left: auto; margin-right: auto;">
+							<tr style="height: 40px;"><td></td></tr>
+							<tr style="height: 20px;">
+								<td class="col1"><a href="{{ url_for('statreport') }}" class="btnstat" target="_blank">Statistic Reports</a>
+									<p>symptoms and medicine</p></td>
+								<!-- <td class="col2"><a href="{{ url_for('userlogs') }}" class="btnact" target="_blank">User Activities</a>
+									<p>user logs and activities</p></td>	 -->
+								<td class="col3"><a href="{{ url_for('chat') }}" target="_blank" class="btnchat">Chat Inquiry</a>
+									<p>chat with PharmAssist</p></td>
+							</tr>
+						</table>
+
+					</table>
+				</div>
+
+				<div class="newsdiv">
+					<h1>Recent News Articles</h1>
+				</div>
+			</div>
+			<h2 id="news_content">{{news}}</h2>
+			</div>
+
+			<div class="footer">
+				&copy; 2018 PharmAssist 🇵🇭
+			</div>
+		</div>
+	</div>
+</body>
+<script>
+	function openNav() {
+	    document.getElementById("mySidenav").style.width = "250px";
+	    document.getElementById("main").style.marginLeft = "250px";
+	}
+
+	function closeNav() {
+	    document.getElementById("mySidenav").style.width = "0";
+	    document.getElementById("main").style.marginLeft= "0";
+	}
+
+	(function() {
+        var txtSearch = document.getElementById('txtSearch');
+        txtSearch.addEventListener('keypress', function(event) {
+            if (event.keyCode == 13) {
+            	alert(txtSearch.value)
+            }
+        });
+    }());
+
+    function loadNews() {
+		var newsList = document.getElementById("news_content").textContent;
+
+		if (newsList != "") {
+	        newsList = newsList.substring(0, newsList.length - 3)
+	        var newsArray = newsList.split("-/-")
+	        var newsItems = 0
+	        var newsCount = newsArray.length
+
+	        for (var i = 0; i < newsCount; i++) {
+	        	var author_date_Str = "";
+	        	var news_div = document.createElement('div');
+				news_div.className = "newsarticle";
+	        	var msgNode1 = document.createTextNode(newsArray[i]);
+	        	i += 1;
+
+				var a_news = document.createElement('a');
+				a_news.className = "news_a";
+				a_news.href = newsArray[i];
+				a_news.target = "_blank";
+				var text_news = document.createElement('text');
+				text_news.className = "news_text";
+				i += 1;
+
+				var img_news = document.createElement('img');
+				img_news.className = "news_img";
+				img_news.src = newsArray[i];
+				i += 1;
+				author_date_Str += " - "+ newsArray[i];
+				var msgNode2 = document.createTextNode(author_date_Str);
+
+				a_news.appendChild(msgNode1);
+				text_news.appendChild(msgNode2);
+				a_news.appendChild(text_news);
+				news_div.appendChild(img_news);
+				news_div.appendChild(a_news);
+				var currentDiv = document.getElementsByClassName("newsdiv");
+				$(currentDiv).append(news_div);
+			}
+		}
+	}
+</script>
+</html>
