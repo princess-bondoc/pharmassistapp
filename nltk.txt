@@ -1,0 +1,6 @@
+punkt
+ptb
+brown
+pros_cons
+verbnet
+wordnet
